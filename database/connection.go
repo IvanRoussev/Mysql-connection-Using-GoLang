@@ -20,23 +20,35 @@ func loadCredentialsFromEnv(key string) string{
 	return os.Getenv(key)
 }
 
+type DBconfig struct {
+	name string
+	username string
+	password string
+	port string
+	host string
+}
+
 
 func main() {
-	dbName := loadCredentialsFromEnv("DATABASE")
-	username := loadCredentialsFromEnv("DBUSER")
-	password := loadCredentialsFromEnv("Password")
-	port := loadCredentialsFromEnv("PORT")
-	host :=loadCredentialsFromEnv("HOST")
+	
+	config := DBconfig{
+	name : loadCredentialsFromEnv("DATABASE"),
+	username : loadCredentialsFromEnv("DBUSER"),
+	password : loadCredentialsFromEnv("Password"),
+	port : loadCredentialsFromEnv("PORT"),
+	host : loadCredentialsFromEnv("HOST"),
+	}
 
-	// fmt.Println(dbName)
-	// fmt.Println(username)
-	// fmt.Println(password)
-	// fmt.Println(port)
-	// fmt.Println(host)
+	fmt.Println(config.name)
+	fmt.Println(config.username)
+	fmt.Println(config.password)
+	fmt.Println(config.port)
+	fmt.Println(config.host)
 
 
-	mysql := username + ":" + password + ">@tcp(" + host + ":" + port + ")/" + dbName
-
+	mysql := config.username + ":" + config.password + ">@tcp(" + config.host + ":" + config.port + ")/" + config.name
+	// fmt.Println(mysql)
+	
 	db, err := sql.Open("mysql", mysql)
 	if err != nil {
 		panic(err.Error())
