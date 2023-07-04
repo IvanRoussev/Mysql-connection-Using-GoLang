@@ -29,7 +29,7 @@ type DBconfig struct {
 }
 
 
-func main() {
+func connection() *sql.DB{
 	
 	config := DBconfig{
 	name : loadCredentialsFromEnv("DATABASE"),
@@ -46,14 +46,29 @@ func main() {
 	fmt.Println(config.host)
 
 
-	mysql := config.username + ":" + config.password + ">@tcp(" + config.host + ":" + config.port + ")/" + config.name
-	// fmt.Println(mysql)
+	mysql := config.username + ":" + config.password + "@tcp(" + config.host + ":" + config.port + ")/" + config.name 
+	fmt.Println(mysql)
 	
 	db, err := sql.Open("mysql", mysql)
 	if err != nil {
+		fmt.Println("Error connecting to database")
+		fmt.Println(err)
 		panic(err.Error())
 	}
 
-	defer db.Close()
-	fmt.Println("Success!")
+
+
+	err = db.Ping()
+
+	if err != nil {
+		fmt.Println("Unable to Connect to database")
+	}
+
+
+
+	return db
+
+
 }
+
+
