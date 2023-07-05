@@ -3,17 +3,14 @@ package main
 import "fmt"
 
 
-type Person struct {
-	PersonID int
-	lname string
-	fname string
-	address string
-	city string
-}
 
-func createTable(query string) error {
+
+
+func insertTable(query string) error{
+
+
+
 	db := connection()
-	
 
 	err := db.Ping()
 
@@ -23,7 +20,12 @@ func createTable(query string) error {
 
 	fmt.Println("Connected to Database")
 
-	_, err = db.Exec(query)
+	_, err = db.Exec(query)    
+	
+	if err != nil {
+		fmt.Errorf("Could not Insert Into Table: %s", err)
+	}
+
 
 	return err
-}
+} 
